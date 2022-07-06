@@ -1,0 +1,33 @@
+package com.example.filestorage.controllers;
+
+import com.example.filestorage.controllers.utils.WorkWithFiles;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+//deletes file
+@RestController
+@RequestMapping("/delete")
+public class DeleteController {
+
+    private final String ROOT = "C:\\Users\\Иван\\Desktop\\Уник\\КСИС\\testFolder";
+
+    @Autowired
+    public DeleteController(WorkWithFiles workWithFiles) {
+        this.workWithFiles = workWithFiles;
+    }
+    private final WorkWithFiles workWithFiles;
+
+    @DeleteMapping("/**")
+    private void delete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String path = ROOT + request.getServletPath().replace("/delete", "");
+        response.setContentType("text/plain");
+        workWithFiles.delete(path, response);
+    }
+}
